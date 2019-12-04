@@ -2,18 +2,20 @@
 
 <p>Description of pattern goes here</p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
+<p *ngIf="!cbstate"><em>Loading...</em></p>
 
 <div class="custom-control custom-switch">
-  <input type="checkbox" class="custom-control-input" id="customSwitch1">
-  <label class="custom-control-label" for="customSwitch1">Use circuit-breaker</label>
+  <input type="checkbox" class="custom-control-input" id="enableCircuitBreaker" [checked]="cbstate.circuitBreakerEnabled">
+  <label class="custom-control-label" for="enableCircuitBreaker">Use circuit-breaker</label>
 </div>
 <div class="custom-control custom-switch">
-  <input type="checkbox" class="custom-control-input" id="customSwitch2">
-  <label class="custom-control-label" for="customSwitch2">Service enabled</label>
+  <input type="checkbox" class="custom-control-input" id="enableService" [checked]="cbstate.serviceEnabled">
+  <label class="custom-control-label" for="enableService">Service enabled</label>
 </div>
 <hr />
-
+<p>
+  <b>Circuit breaker status: {{cbstate.circuitBreakerClosed ? "Closed" : "Open"}}</b>
+</p>
 <div class="row">
   <div class="col-sm-4">
     <div class="card">
@@ -70,27 +72,4 @@
   </div>
 </div>
 <hr />
-<p>
-  Circuit breaker status:
-  Open, half-open, closed
-</p>
 
-
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="forecasts">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Temp. (C)</th>
-          <th>Temp. (F)</th>
-          <th>Summary</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let forecast of forecasts">
-          <td>{{ forecast.date }}</td>
-          <td>{{ forecast.temperatureC }}</td>
-          <td>{{ forecast.temperatureF }}</td>
-          <td>{{ forecast.summary }}</td>
-        </tr>
-      </tbody>
-    </table>

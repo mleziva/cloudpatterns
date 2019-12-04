@@ -11,8 +11,10 @@ namespace CloudPatterns.Managers
     public static class CircuitBreakerManager
     {
         public static string FailureMessage = "Service failed";
-        public static bool ServiceEnabled { get; set; } = true;
+        public static bool CircuitBreakerClosed => breaker.IsClosed;
         public static bool CircuitBreakerEnabled { get; set; } = true;
+        public static bool ServiceEnabled { get; set; } = true;
+
         private static readonly CircuitBreaker breaker = new CircuitBreaker();
         public static ResponseMessageWithStatus PerformAction()
         {
