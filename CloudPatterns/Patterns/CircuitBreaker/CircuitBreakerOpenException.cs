@@ -7,7 +7,8 @@ namespace CloudPatterns.Patterns.CircuitBreaker
 {
     public class CircuitBreakerOpenException : Exception
     {
+        public static string ErrorMessage = "Circuit Breaker is open";
         public CircuitBreakerOpenException() : base() { }
-        public CircuitBreakerOpenException(Exception inner) : base("Circuit Breaker is open", inner) { }
+        public CircuitBreakerOpenException(Exception inner) : base(ErrorMessage, inner) { }
     }
 }

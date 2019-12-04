@@ -10,8 +10,9 @@ namespace CloudPatterns.Managers
 {
     public static class CircuitBreakerManager
     {
-        public static bool ServiceEnabled { get; set; }
-        public static bool CircuitBreakerEnabled { get; set; }
+        public static string FailureMessage = "Service failed";
+        public static bool ServiceEnabled { get; set; } = true;
+        public static bool CircuitBreakerEnabled { get; set; } = true;
         private static readonly CircuitBreaker breaker = new CircuitBreaker();
         public static ResponseMessageWithStatus PerformAction()
         {
@@ -33,10 +34,16 @@ namespace CloudPatterns.Managers
                     return new ResponseMessageWithStatus(false, ex.Message);
                 }
             }
-            return SimulateExternalDependency();
-
+            try
+            {
+                return SimulateExternalDependency();
+            }
+            catch (Exception ex)
+            {
+                return new ResponseMessageWithStatus(false, ex.Message);
+            }
         }
-
+      
         private static ResponseMessageWithStatus SimulateExternalDependency()
         {
             if (ServiceEnabled)
@@ -45,7 +52,7 @@ namespace CloudPatterns.Managers
                 return new ResponseMessageWithStatus(true, "success!");
             }
             Thread.Sleep(5000);
-            throw new Exception("Service failed");
+            throw new Exception(FailureMessage);
         }
     }
 }
