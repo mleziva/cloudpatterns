@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CloudPatterns.Services;
+using CloudPatterns.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,27 +15,27 @@ namespace CloudPatterns.Controllers
         [HttpGet]
         public IActionResult DoServiceAction()
         {
-            var result = CircuitBreakerService.PerformAction();
+            var result = CircuitBreakerManager.PerformAction();
             return Ok(result);
         }
 
         [HttpGet]
         public IActionResult GetState()
         {
-            var state = new { CircuitBreakerService.ServiceEnabled, CircuitBreakerService.CircuitBreakerEnabled };
+            var state = new { CircuitBreakerManager.ServiceEnabled, CircuitBreakerManager.CircuitBreakerEnabled };
             return Ok(state);
         }
 
         [HttpPost]
         public IActionResult EnableService(bool serviceEnabled)
         {
-            CircuitBreakerService.ServiceEnabled = serviceEnabled;
+            CircuitBreakerManager.ServiceEnabled = serviceEnabled;
             return Ok(true);
         }
         [HttpPost]
         public IActionResult DisableCircuitBreaker(bool circuitBreakerEnabled)
         {
-            CircuitBreakerService.CircuitBreakerEnabled = circuitBreakerEnabled;
+            CircuitBreakerManager.CircuitBreakerEnabled = circuitBreakerEnabled;
             return Ok(true);
         }
     }

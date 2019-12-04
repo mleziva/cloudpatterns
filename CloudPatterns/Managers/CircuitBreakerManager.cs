@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CloudPatterns.Services
+namespace CloudPatterns.Managers
 {
-    public static class CircuitBreakerService
+    public static class CircuitBreakerManager
     {
         public static bool ServiceEnabled { get; set; }
         public static bool CircuitBreakerEnabled { get; set; }
