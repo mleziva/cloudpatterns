@@ -17,7 +17,7 @@ namespace CloudPatterns.Patterns.CircuitBreaker
         public bool IsClosed { get { return stateStore.IsClosed; } }
 
         public bool IsOpen { get { return !IsClosed; } }
-
+        public CircuitBreakerStateEnum State => stateStore.State;
         public T ExecuteAction<T>(Func<T> action)
         {
             if (IsOpen)
@@ -61,7 +61,14 @@ namespace CloudPatterns.Patterns.CircuitBreaker
             // Alternatively it might count exceptions locally or across multiple instances and
             // use this value over time, or the exception/success ratio based on the exception
             // types, to open the circuit breaker.
-            this.stateStore.Trip(ex);
+            stateStore.FailedRequestCount++;
+            var previousLastExceptionTime = stateStore.LastExceptionTime;
+            stateStore.LastExceptionTime = DateTime.UtcNow;
+            if (stateStore.FailedRequestCount > 1 && previousLastExceptionTime.AddMinutes(1) > stateStore.LastExceptionTime)
+            {
+                stateStore.Trip(ex);
+            }
+            
         }
         private T LockAndPerformAction<T>(Func<T> action)
         {
@@ -81,17 +88,13 @@ namespace CloudPatterns.Patterns.CircuitBreaker
                 Monitor.TryEnter(halfOpenSyncObject, ref lockTaken);
                 if (lockTaken)
                 {
-                    // Set the circuit breaker state to HalfOpen.
                     stateStore.HalfOpen();
-
-                    // Attempt the operation.
                     var result = action();
-
-                    // If this action succeeds, reset the state and allow other operations.
-                    // In reality, instead of immediately returning to the Closed state, a counter
-                    // here would record the number of successful operations and return the
-                    // circuit breaker to the Closed state only after a specified number succeed.
-                    this.stateStore.Reset();
+                    stateStore.SuccessRequestCount++;
+                    if(stateStore.SuccessRequestCount > 1)
+                    {
+                        this.stateStore.Reset();
+                    }
                     return result;
                 }
                 return default;

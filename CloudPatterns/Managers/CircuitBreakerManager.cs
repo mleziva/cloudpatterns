@@ -11,7 +11,7 @@ namespace CloudPatterns.Managers
     public static class CircuitBreakerManager
     {
         public static string FailureMessage = "Service failed";
-        public static bool CircuitBreakerClosed => breaker.IsClosed;
+        public static string CircuitBreakerState => breaker.State.ToString();
         public static bool CircuitBreakerEnabled { get; set; } = true;
         public static bool ServiceEnabled { get; set; } = true;
 
@@ -50,10 +50,10 @@ namespace CloudPatterns.Managers
         {
             if (ServiceEnabled)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(200);
                 return new ResponseMessageWithStatus(true, "success!");
             }
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
             throw new Exception(FailureMessage);
         }
     }

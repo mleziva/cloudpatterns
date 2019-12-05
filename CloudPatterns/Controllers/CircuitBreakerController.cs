@@ -23,20 +23,20 @@ namespace CloudPatterns.Controllers
         [HttpGet]
         public IActionResult GetState()
         {
-            var state = new { CircuitBreakerManager.ServiceEnabled, CircuitBreakerManager.CircuitBreakerEnabled, CircuitBreakerManager.CircuitBreakerClosed };
+            var state = new { CircuitBreakerManager.ServiceEnabled, CircuitBreakerManager.CircuitBreakerEnabled, CircuitBreakerManager.CircuitBreakerState };
             return Ok(state);
         }
 
         [Route("manage/Service")]
-        [HttpPost]
-        public IActionResult EnableService(bool serviceEnabled)
+        [HttpPut]
+        public IActionResult EnableService([FromBody]bool serviceEnabled)
         {
             CircuitBreakerManager.ServiceEnabled = serviceEnabled;
             return Ok(true);
         }
         [Route("manage/circuitbreaker")]
-        [HttpPost]
-        public IActionResult DisableCircuitBreaker(bool circuitBreakerEnabled)
+        [HttpPut]
+        public IActionResult DisableCircuitBreaker([FromBody]bool circuitBreakerEnabled)
         {
             CircuitBreakerManager.CircuitBreakerEnabled = circuitBreakerEnabled;
             return Ok(true);

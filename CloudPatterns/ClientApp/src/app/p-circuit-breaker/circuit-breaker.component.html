@@ -1,74 +1,64 @@
 <h1 id="tableLabel">Circuit Breaker Pattern</h1>
 
-<p>Description of pattern goes here</p>
+<p>
+  The circuit breaker pattern prevents an application from retrying a service which is known to be unavailable.
+  This can allow the application to accept failure more gracefully and prevent the application from overloading an unavailable/down service
+</p>
+<p>
+  This Angular application demonstrates that pattern by allowing a user to walk through the possible scenarios:
+</p>
+<ul>
+  <li><b>Service is enabled:</b> The service is able to complete its work in .2 seconds and returns a successful response</li>
+  <li><b>Service is disabled and circuit breaker is disabled:</b> The service attempts to perform work, but fails after 2 seconds and returns error </li>
+  <li>
+    <b>Service is disabled and circuit breaker is enabled</b> The first call to the service fails after 2 seconds and triggers the circuit breaker.
+    Subsequent calls are intercepted by the circuit breaker and do not perform work and return the circuit breaker error.
+    After a minute has passed, the circuit breaker will allow the service to handle a request. If that request is successful the circuit breaker will be set to a 'half-open' state
+  </li>
+</ul>
+<p>
+  <b>Summary of circuit breaker states</b>
+</p>
+<ul>
+  <li>
+    Closed: Request may proceed to service. Two failures in under 1 minute flips breaker to 'open' state
+  </li>
+  <li>
+    Open: Requests are intercepted by circuit breaker for 1 minute. After 1 minute a request is allowed to the service.
+    If that request succeeds the circuit breaker is set to 'half-open'. If that request fails the circuit breaker returns to 'open' for an additional minute
+  </li>
+  <li>
+    Half-open: if the first request after the circuit breaker open timeout expires succeeds, the circuit breaker is set to half-open. If the subsequent request fails, the circuit breaker returns to open.
+    If the subsquent request succeeds, the circuit breaker returns to closed.
+  </li>
+</ul>
 
-<p *ngIf="!cbstate"><em>Loading...</em></p>
+<p><a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Microsoft Docs Reference</a></p>
 
+<p *ngIf="!cbState"><em>Loading...</em></p>
 <div class="custom-control custom-switch">
-  <input type="checkbox" class="custom-control-input" id="enableCircuitBreaker" [checked]="cbstate.circuitBreakerEnabled">
+  <input type="checkbox" class="custom-control-input" id="enableCircuitBreaker" [checked]="cbState?.circuitBreakerEnabled" (change)="setCBState()">
   <label class="custom-control-label" for="enableCircuitBreaker">Use circuit-breaker</label>
 </div>
 <div class="custom-control custom-switch">
-  <input type="checkbox" class="custom-control-input" id="enableService" [checked]="cbstate.serviceEnabled">
+  <input type="checkbox" class="custom-control-input" id="enableService" [checked]="cbState?.serviceEnabled" (change)="setServiceState()">
   <label class="custom-control-label" for="enableService">Service enabled</label>
 </div>
 <hr />
 <p>
-  <b>Circuit breaker status: {{cbstate.circuitBreakerClosed ? "Closed" : "Open"}}</b>
+  <b>Circuit breaker status: {{cbState?.circuitBreakerState}}</b>
+  <span style="margin-left:20px;">Last refreshed: {{cbState?.lastRefreshed | date : 'mediumTime'}}</span>
+  <a (click)="refreshState()"><i class="fa fa-refresh" aria-hidden="true" style="margin-left:10px;"></i></a>
 </p>
 <div class="row">
   <div class="col-sm-4">
-    <div class="card">
-      <div class="card-header">
-        Client 1
-      </div>
-      <div class="card-body">
-        <button type="button" class="btn btn-primary" aria-pressed="false" autocomplete="off">
-          Execute request
-        </button>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Executed Date: </li>
-        <li class="list-group-item">Response Time: </li>
-        <li class="list-group-item">Status: </li>
-      </ul>
-    </div>
+    <circuit-breaker-client></circuit-breaker-client>
   </div>
-
   <div class="col-sm-4">
-    <div class="card">
-      <div class="card-header">
-        Client 2
-      </div>
-      <div class="card-body">
-        <button type="button" class="btn btn-primary" aria-pressed="false" autocomplete="off">
-          Execute request
-        </button>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Executed Date: </li>
-        <li class="list-group-item">Response Time: </li>
-        <li class="list-group-item">Status: </li>
-      </ul>
-    </div>
+    <circuit-breaker-client></circuit-breaker-client>
   </div>
-
   <div class="col-sm-4">
-    <div class="card">
-      <div class="card-header">
-        Client 3
-      </div>
-      <div class="card-body">
-        <button type="button" class="btn btn-primary" aria-pressed="false" autocomplete="off">
-          Execute request
-        </button>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Executed Date: </li>
-        <li class="list-group-item">Response Time: </li>
-        <li class="list-group-item">Status: </li>
-      </ul>
-    </div>
+    <circuit-breaker-client></circuit-breaker-client>
   </div>
 </div>
 <hr />

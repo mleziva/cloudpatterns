@@ -12,6 +12,9 @@ namespace CloudPatterns.Patterns.CircuitBreaker
         Exception LastException { get; }
 
         DateTime LastStateChangedDateUtc { get; }
+        DateTime LastExceptionTime { get; set; }
+        int FailedRequestCount { get; set; }
+        int SuccessRequestCount { get; set; }
 
         void Trip(Exception ex);
 
@@ -20,6 +23,7 @@ namespace CloudPatterns.Patterns.CircuitBreaker
         void HalfOpen();
 
         bool IsClosed { get; }
+
     }
     public enum CircuitBreakerStateEnum
     {

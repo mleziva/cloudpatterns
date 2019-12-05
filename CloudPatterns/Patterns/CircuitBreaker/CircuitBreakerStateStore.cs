@@ -15,15 +15,19 @@ namespace CloudPatterns.Patterns.CircuitBreaker
 
         public bool IsClosed => State == CircuitBreakerStateEnum.Closed;
 
+        public int FailedRequestCount { get; set; } = 0;
+        public int SuccessRequestCount { get; set; } = 0;
+        public DateTime LastExceptionTime { get; set; }
 
         public void HalfOpen()
         {
             State = CircuitBreakerStateEnum.HalfOpen;
-            LastChangedDateNow();
         }
 
         public void Reset()
         {
+            FailedRequestCount = 0;
+            SuccessRequestCount = 0;
             State = CircuitBreakerStateEnum.Closed;
             LastChangedDateNow();
         }
