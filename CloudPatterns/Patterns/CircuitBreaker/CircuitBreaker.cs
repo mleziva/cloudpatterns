@@ -8,7 +8,7 @@ namespace CloudPatterns.Patterns.CircuitBreaker
 {
     public class CircuitBreaker
     {
-        private readonly ICircuitBreakerStateStore stateStore = new CircuitBreakerStateStore();
+        private readonly ICircuitBreakerStateStore stateStore;
 
         private readonly object halfOpenSyncObject = new object();
 
@@ -18,6 +18,10 @@ namespace CloudPatterns.Patterns.CircuitBreaker
 
         public bool IsOpen { get { return !IsClosed; } }
         public CircuitBreakerStateEnum State => stateStore.State;
+        public CircuitBreaker(ICircuitBreakerStateStore circuitBreakerStateStore)
+        {
+            stateStore = circuitBreakerStateStore;
+        }
         public T ExecuteAction<T>(Func<T> action)
         {
             if (IsOpen)

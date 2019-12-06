@@ -27,6 +27,6 @@ namespace CloudPatterns.Patterns.CircuitBreaker
     }
     public enum CircuitBreakerStateEnum
     {
-        Open, HalfOpen, Closed
+        Closed, HalfOpen, Open
     }
 }
