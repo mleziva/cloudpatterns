@@ -12,10 +12,15 @@ namespace CloudPatterns.Controllers
     [ApiController]
     public class CircuitBreakerController : ControllerBase
     {
+        private readonly ICircuitBreakerManager circuitBreakerManager;
+        public CircuitBreakerController(ICircuitBreakerManager circuitBreakerManager)
+        {
+            this.circuitBreakerManager = circuitBreakerManager;
+        }
         [HttpGet]
         public IActionResult DoServiceAction()
         {
-            var result = CircuitBreakerManager.PerformAction();
+            var result = circuitBreakerManager.PerformAction();
             return Ok(result);
         }
 
@@ -23,7 +28,7 @@ namespace CloudPatterns.Controllers
         [HttpGet]
         public IActionResult GetState()
         {
-            var state = new { CircuitBreakerManager.ServiceEnabled, CircuitBreakerManager.CircuitBreakerEnabled, CircuitBreakerManager.CircuitBreakerState };
+            var state = new { circuitBreakerManager.ServiceEnabled, circuitBreakerManager.CircuitBreakerEnabled, circuitBreakerManager.CircuitBreakerState };
             return Ok(state);
         }
 
@@ -31,15 +36,15 @@ namespace CloudPatterns.Controllers
         [HttpPut]
         public IActionResult EnableService([FromBody]bool serviceEnabled)
         {
-            CircuitBreakerManager.ServiceEnabled = serviceEnabled;
-            return Ok(true);
+            circuitBreakerManager.ServiceEnabled = serviceEnabled;
+            return Ok(serviceEnabled);
         }
         [Route("manage/circuitbreaker")]
         [HttpPut]
         public IActionResult DisableCircuitBreaker([FromBody]bool circuitBreakerEnabled)
         {
-            CircuitBreakerManager.CircuitBreakerEnabled = circuitBreakerEnabled;
-            return Ok(true);
+            circuitBreakerManager.CircuitBreakerEnabled = circuitBreakerEnabled;
+            return Ok(circuitBreakerEnabled);
         }
     }
 }

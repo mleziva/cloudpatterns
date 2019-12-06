@@ -1,3 +1,4 @@
+using CloudPatterns.Managers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,8 @@ namespace CloudPatterns
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            //Scoped lifetime services (AddScoped) are created once per client request (connection).
+            services.AddScoped<ICircuitBreakerManager, CircuitBreakerManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

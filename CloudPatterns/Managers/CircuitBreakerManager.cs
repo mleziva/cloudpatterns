@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace CloudPatterns.Managers
 {
-    public static class CircuitBreakerManager
+    public class CircuitBreakerManager : ICircuitBreakerManager
     {
         public static string FailureMessage = "Service failed";
-        public static string CircuitBreakerState => breaker.State.ToString();
-        public static bool CircuitBreakerEnabled { get; set; } = true;
-        public static bool ServiceEnabled { get; set; } = true;
+        public string CircuitBreakerState => breaker.State.ToString();
+        public bool CircuitBreakerEnabled { get; set; } = true;
+        public bool ServiceEnabled { get; set; } = true;
 
-        private static readonly CircuitBreaker breaker = new CircuitBreaker();
-        public static ResponseMessageWithStatus PerformAction()
+        private readonly CircuitBreaker breaker = new CircuitBreaker();
+        public ResponseMessageWithStatus PerformAction()
         {
             if (CircuitBreakerEnabled)
             {
@@ -46,7 +46,7 @@ namespace CloudPatterns.Managers
             }
         }
       
-        private static ResponseMessageWithStatus SimulateExternalDependency()
+        private ResponseMessageWithStatus SimulateExternalDependency()
         {
             if (ServiceEnabled)
             {
