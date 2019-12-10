@@ -39,7 +39,7 @@ export class CircuitBreakerClientComponent {
 
     private cbServiceUrl = "api/circuitbreaker";
     public cbResponse: CBServiceResponse;
-    private loading: boolean = false;
+    public loading: boolean = false;
     constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     }
 

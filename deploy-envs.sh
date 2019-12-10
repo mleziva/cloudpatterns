@@ -4,7 +4,7 @@
 export IMAGE_NAME=cloudpatterns
 export IMAGE_VERSION=latest
 
-export AWS_DEFAULT_REGION=us-east-2c
+export AWS_DEFAULT_REGION=us-east-2
 export AWS_ECS_CLUSTER_NAME=default
 export AWS_VIRTUAL_HOST=cloudpatterns.austinmleziva.com
 
