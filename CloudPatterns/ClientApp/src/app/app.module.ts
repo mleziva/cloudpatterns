@@ -11,8 +11,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CircuitBreakerComponent } from './p-circuit-breaker/circuit-breaker.component';
 import { CircuitBreakerClientComponent } from './p-circuit-breaker/circuit-breaker-client.component';
 
@@ -22,8 +20,6 @@ import { CircuitBreakerClientComponent } from './p-circuit-breaker/circuit-break
     NavMenuComponent,
     SidebarMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
         CircuitBreakerComponent,
         CircuitBreakerClientComponent
   ],
@@ -33,8 +29,6 @@ import { CircuitBreakerClientComponent } from './p-circuit-breaker/circuit-break
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
         { path: 'circuit-breaker', component: CircuitBreakerComponent },
     ]),
       BrowserAnimationsModule,
