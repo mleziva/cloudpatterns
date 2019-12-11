@@ -11,10 +11,22 @@ html {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-.sidebar {
-  position: absolute;
-}
+
 .link-active {
   border: solid 1px aliceblue;
   font-weight: 700;
+}
+
+@media only screen and (min-width: 1530px) {
+  .sidebar {
+    position: absolute;
+  }
+  .navbar-brand {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1530px) {
+  .navbar-brand {
+    display: block;
+  }
 }
