@@ -2,7 +2,7 @@
 Demonstrates common cloud patterns using angular and .NET core
 
 ### Build status:
-https://travis-ci.com/mleziva/cloudpatterns.svg?branch=master
+[![Build Status](https://travis-ci.com/mleziva/cloudpatterns.svg?branch=master)](https://travis-ci.com/mleziva/cloudpatterns)
 
 ### Patterns demonstrated:
 
